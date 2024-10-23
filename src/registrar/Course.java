@@ -10,7 +10,7 @@ import java.util.Objects;
 @SuppressWarnings("WeakerAccess")
 public class Course {
     public static final int UNLIMITED_ENROLLMENT = Integer.MAX_VALUE;
-
+    
     private final String catalogNumber;
     private final String title;
     private List<Student> roster = new ArrayList<>();
@@ -81,7 +81,7 @@ public class Course {
     }
 
     @Override
-    public String toString() {
+    public String toString() { // Overriding from the object classes 
         return getCatalogNumber();
     }
 }

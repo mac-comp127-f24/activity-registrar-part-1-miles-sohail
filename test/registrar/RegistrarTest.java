@@ -12,24 +12,24 @@ import static org.junit.jupiter.api.Assertions.*;
 class RegistrarTest {
     // ------ Setup ------
 
-    private TestObjectFactory factory = new TestObjectFactory();
+    private TestObjectFactory School = new TestObjectFactory();
     private Course comp127, math6, basketWeaving101;
     private Student sally, fred, zongo;
 
     @BeforeEach
     public void createStudents() {
-        sally = factory.makeStudent("Sally");
-        fred = factory.makeStudent("Fred");
-        zongo = factory.makeStudent("Zongo Jr.");
+        sally = School.makeStudent("Sally");
+        fred = School.makeStudent("Fred");
+        zongo = School.makeStudent("Zongo Jr.");
     }
 
     @BeforeEach
     public void createCourses() {
-        comp127 = factory.makeCourse("COMP 127", "Software Fun Fun");
+        comp127 = School.makeCourse("COMP 127", "Software Fun Fun");
         comp127.setEnrollmentLimit(16);
 
-        math6 = factory.makeCourse("Math 6", "All About the Number Six");
-        basketWeaving101 = factory.makeCourse("Underwater Basket Weaving 101", "Senior spring semester!");
+        math6 = School.makeCourse("Math 6", "All About the Number Six");
+        basketWeaving101 = School.makeCourse("Underwater Basket Weaving 101", "Senior spring semester!");
     }
 
     // ------ Enrolling ------
@@ -56,20 +56,20 @@ class RegistrarTest {
 
     @Test
     void enrollmentLimitDefaultsToUnlimited() {
-        factory.enrollMultipleStudents(math6, 1000);
+        School.enrollMultipleStudents(math6, 1000);
         assertEquals(1000, math6.getRoster().size());
     }
 
     @Test
     void enrollingUpToLimitAllowed() {
-        factory.enrollMultipleStudents(comp127, 15);
+        School.enrollMultipleStudents(comp127, 15);
         assertTrue(sally.enrollIn(comp127));
         assertTrue(comp127.getRoster().contains(sally));
     }
 
     @Test
     void cannotEnrollPastLimit() {
-        factory.enrollMultipleStudents(comp127, 16);
+        School.enrollMultipleStudents(comp127, 16);
         assertFalse(sally.enrollIn(comp127));
         assertFalse(comp127.getRoster().contains(sally));
     }
@@ -82,9 +82,9 @@ class RegistrarTest {
 
     @AfterEach
     public void checkInvariants() {
-        for (Student s : factory.allStudents())
+        for (Student s : School.allStudents())
             checkStudentInvariants(s);
-        for (Course c : factory.allCourses())
+        for (Course c : School.allCourses())
             checkCourseInvariants(c);
     }
 
@@ -108,4 +108,11 @@ class RegistrarTest {
             c + " has an enrollment limit of " + c.getEnrollmentLimit()
                 + ", but has " + c.getRoster().size() + " students");
     }
+    @Test
+    void clientsCannotModifyCourses() {
+       List<Course> courses = sally.getCourses();
+       courses.add(comp127);
+    }
+
+
 }
