@@ -1,6 +1,7 @@
 package registrar;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -24,7 +25,8 @@ public class Student {
      * Returns all courses this student is currently enrolled in.
      */
     public List<Course> getCourses() {
-        return new ArrayList<>(courses); // We're returning the runtime-type Array List beacause its an implementation of the List interface
+        
+        return Collections.unmodifiableList(courses); // We're returning the runtime-type Array List beacause its an implementation of the List interface
     }
 
     /**

@@ -111,8 +111,17 @@ class RegistrarTest {
     @Test
     void clientsCannotModifyCourses() {
        List<Course> courses = sally.getCourses();
-       courses.add(comp127);
+       assertThrows(UnsupportedOperationException.class, () -> {
+        courses.add(comp127);
+     });
     }
 
-
+    @Test
+    void clientsCannotModifyRosters() {
+       List<Student> student = comp127.getRoster();
+       assertThrows(UnsupportedOperationException.class, () -> {
+        student.add(sally);
+     });
+    }
+     
 }

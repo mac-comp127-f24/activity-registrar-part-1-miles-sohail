@@ -1,6 +1,7 @@
 package registrar;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -51,7 +52,7 @@ public class Course {
      * Returns all students currently enrolled in this course.
      */
     public List<Student> getRoster() {
-        return roster;
+        return Collections.unmodifiableList(roster);
     }
 
     // 👋 Note that this method isn’t public! 👋
