@@ -1,6 +1,7 @@
 package registrar;
 
-import java.util.List;
+
+import java.util.Set;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -36,14 +37,14 @@ class RegistrarTest {
 
     @Test
     void studentStartsInNoCourses() {
-        assertEquals(List.of(), sally.getCourses());
+        assertEquals(Set.of(), sally.getCourses());
     }
 
     @Test
     void studentCanEnroll() {
         sally.enrollIn(comp127);
-        assertEquals(List.of(comp127), sally.getCourses());
-        assertEquals(List.of(sally), comp127.getRoster());
+        assertEquals(Set.of(comp127), sally.getCourses());
+        assertEquals(Set.of(sally), comp127.getRoster());
     }
 
     // ------ Enrollment limits ------
@@ -93,7 +94,7 @@ class RegistrarTest {
             assertTrue(
                 c.getRoster().contains(s),
                 s + " thinks they are enrolled in " + c
-                    + ", but " + c + " does not have them in the list of students");
+                    + ", but " + c + " does not have them in the Set of students");
     }
 
     private void checkCourseInvariants(Course c) {
@@ -110,7 +111,7 @@ class RegistrarTest {
     }
     @Test
     void clientsCannotModifyCourses() {
-       List<Course> courses = sally.getCourses();
+       Set<Course> courses = sally.getCourses();
        assertThrows(UnsupportedOperationException.class, () -> {
         courses.add(comp127);
      });
@@ -118,10 +119,20 @@ class RegistrarTest {
 
     @Test
     void clientsCannotModifyRosters() {
-       List<Student> student = comp127.getRoster();
+       Set<Student> student = comp127.getRoster();
        assertThrows(UnsupportedOperationException.class, () -> {
         student.add(sally);
      });
+    }
+    @Test
+    void clientsCannotAddMultiple(){
+        sally.enrollIn(comp127);
+        sally.enrollIn(comp127);
+        sally.enrollIn(comp127);
+        Set<Student> student = comp127.getRoster();
+        Set<Course> courses = sally.getCourses();
+        assertEquals(1, student.size());
+        assertEquals(1, courses.size());
     }
      
 }
